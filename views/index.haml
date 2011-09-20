@@ -1,4 +1,8 @@
 %head
   %title Social Status Sync (s2sync)
 %body
-  %script {:type=>'text/javascript', :src=>'jquery.js'}
+  %div{:style=>'align: center'}
+    %script{:type=>'text/javascript', :src=>'jquery.js'}  
+    %script{:type=>'text/javascript', :src=>'s2sync.js'}  
+    %textarea{:id=>'content',:style=> 'border-radius: 30px', :onKeyUp=>'word_count()'}
+    %div{:id=>'word_count_indicator'} 0
