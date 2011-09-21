@@ -9,8 +9,12 @@ class PlurkAgent
     @plurk = Plurk.new(:consumer_key => PLURK_APP_KEY, :consumer_secret => PLURK_APP_SECRET)
   end
 
-  def get_authorize_url
-    return @plurk.authorize_url!
+  def get_authorize_url(host, port)
+    return @plurk.authorize_url! if @plurk.oauth_token == nil
+  end
+
+  def oauth_token= (token) 
+    @plurk.oauth_token = token
   end
 
   def get_access_token(verifier_or_token=nil,secret=nil)

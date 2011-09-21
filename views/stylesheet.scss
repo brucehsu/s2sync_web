@@ -44,3 +44,11 @@ $border: 2px solid;
     horizontal-align: center;
     vertical-align: middle;
 }
+
+.post_widget {
+    @include widget;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: $width;
+    horizontal-align: center;
+}
