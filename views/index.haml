@@ -1,8 +1,10 @@
 %head
   %title Social Status Sync (s2sync)
+  %link{:href=>'stylesheet.css',:rel=>'stylesheet',:type=>'text/css'}
 %body
-  %div{:style=>'align: center'}
-    %script{:type=>'text/javascript', :src=>'jquery.js'}  
-    %script{:type=>'text/javascript', :src=>'s2sync.js'}  
-    %textarea{:id=>'content',:style=> 'border-radius: 30px', :onKeyUp=>'word_count()'}
-    %div{:id=>'word_count_indicator'} 0
+  %script{:type=>'text/javascript', :src=>'jquery.js'}
+  %script{:type=>'text/javascript', :src=>'s2sync.js'}
+  %div{:class=>'widget_box'}
+    %textarea{:id=>'content', :name=>'content', :onKeyUp=>'word_count()', :rows=>'10',:cols=>'30', :class=>'text_widget'} 
+    %input{:type=>'checkbox', :name=>'post_comment', :value=>'true', :class=>'comment_widget'} Post as comment
+    %div{:id=>'word_count_indicator', :class=>'word_count_widget'} 0

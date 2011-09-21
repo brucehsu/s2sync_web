@@ -1,0 +1,46 @@
+$radius: 20px;
+$color: blue;
+$width: 400px;
+$height: 400px;
+$border: 2px solid;
+.rounded {
+    border-radius: $radius;
+}
+
+.border {
+    border: $border;
+}
+
+.widget_box {
+    position: relative;
+    margin: auto;
+    width: $width+50;
+    height:$height+50;
+    background-color: lighten($color, 100%);
+}
+
+@mixin widget {
+    margin: 20px;
+}
+
+.comment_widget {
+    @include widget;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.word_count_widget {
+    @include widget;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: right;
+}
+
+.text_widget {
+    @include widget;
+    margin-bottom: 5px;
+    width: $width;
+    height: $height;
+    horizontal-align: center;
+    vertical-align: middle;
+}
