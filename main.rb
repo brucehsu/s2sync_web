@@ -61,13 +61,39 @@ end
 
 post '/post' do
   stat = ""
+  puts params[:content]
+  content = CGI::unescape(params[:content])
+  as_comment = params[:post_comment]
+  content = content.split(/^\\p/)
   @agents.each { |sns, agent|
-    res = agent.post_content(params[:content])
+    if as_comment == 'true' then
+      res = agent.post_comment(content[0].strip, session[:prev_id][sns])
+    else
+      res = agent.post_content(content[0].strip)
+    end
     if res['error_text'] then
       stat += "<br />" unless stat == ""
       stat += "#{sns.to_s}: #{res['error_text']}"
     end
+
+    if content.count > 1 then
+      content.each_index { |index|
+        res = agent.post_comment(content[index].strip) unless index == 0
+        if res['error_text'] then
+          stat += "<br />" unless stat == ""
+          stat += "#{sns.to_s}: #{res['error_text']}"
+        end
+      }
+    end
   }
+  
+  unless session[:prev_id] then
+    session[:prev_id] = {}
+  end
+
+  session[:prev_id][:plurk] = @agents[:plurk].prev_id if @agents[:plurk].prev_id
+  session[:prev_id][:fb] = @agents[:fb].prev_id if @agents[:fb].prev_id
+
   if stat == "" then
     return "Successfully posted"
   end
