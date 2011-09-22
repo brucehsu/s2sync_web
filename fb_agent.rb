@@ -6,10 +6,8 @@ class FBAgent
   attr_reader :prev_id
 
   def initialize(opt={})
-    if opt=={} then 
-      opt[:app_id] = FB_APP_KEY
-      opt[:secret] = FB_APP_SECRET
-    end
+    opt[:app_id] = FB_APP_KEY
+    opt[:secret] = FB_APP_SECRET
     @facebook = RestCore::Facebook.new(opt)
   end
 

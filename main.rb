@@ -19,7 +19,7 @@ before do
   end
 
   if session[:fb_attr] then
-    @agents[:fb] = FBAgent.new(session[:fb_attr])
+    @agents[:fb] = FBAgent.new(:access_token => session[:fb_attr])
   else
     @agents[:fb] = FBAgent.new
   end
@@ -27,13 +27,13 @@ end
 
 after do
   session[:plurk_attr] = @agents[:plurk].attributes
-  session[:fb_attr] = @agents[:fb].attributes
+#  session[:fb_attr] = @agents[:fb].attributes
 end
 
 get '/' do
   @auth_url = {}
   @agents.each { |sns, agent|
-    @auth_url[sns] = agent.get_authorize_url request.host,request.port
+    @auth_url[sns] = agent.get_authorize_url request.host,request.port unless session["#{sns.to_s}_attr".to_sym]
   }
 
   haml :index
@@ -47,7 +47,7 @@ get '/fb_callback' do
   code = params[:code]
 
   fb = @agents[:fb]
-  fb.get_access_token code
+  session[:fb_attr] = fb.get_access_token code
 end
 
 
@@ -60,5 +60,7 @@ get '/plurk_callback' do
 end
 
 post '/post' do
-  return params[:content]
+  @agents.each { |sns, agent|
+    agent.post_content(params[:content])
+  }
 end
