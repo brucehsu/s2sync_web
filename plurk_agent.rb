@@ -6,8 +6,10 @@ class PlurkAgent
   attr_reader :prev_id
 
   def initialize(opt={})
-    opt[:consumer_key] =  PLURK_APP_KEY
-    opt[:consumer_secret] = PLURK_APP_SECRET
+    if opt=={} then 
+      opt[:consumer_key] =  PLURK_APP_KEY
+      opt[:consumer_secret] = PLURK_APP_SECRET 
+    end
     @plurk = Plurk.new(opt)
   end
 

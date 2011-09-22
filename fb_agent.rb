@@ -5,24 +5,27 @@ require 'rest-core/client/facebook'
 class FBAgent
   attr_reader :prev_id
 
-  def initialize
-    @facebook = RestCore::Facebook.new(:app_id => FB_APP_KEY, :secret => FB_APP_SECRET)
-  end
-
-  def get_authorize_url
-    return @facebook.authorize_url(:scope =>  'publish_stream,read_stream,user_about_me,offline_access',
-                                   :redirect_uri => 'https://www.facebook.com/connect/login_success.html')
-  end
-
-  def get_access_token(url_or_token, html=nil)
-    if url_or_token =~ /https:\/\/www.facebook.com\/connect\/login_success.html\?code=(\w|\W)+/ then
-      fb_code = url_or_token.split(/https:\/\/www.facebook.com\/connect\/login_success.html\?code=/)[1]
-      @facebook.authorize!(:redirect_uri => 'https://www.facebook.com/connect/login_success.html',
-                           :code => fb_code)
-    else
-      @facebook.access_token = url_or_token
-      get_user_id
+  def initialize(opt={})
+    if opt=={} then 
+      opt[:app_id] = FB_APP_KEY
+      opt[:secret] = FB_APP_SECRET
     end
+    @facebook = RestCore::Facebook.new(opt)
+  end
+
+  def get_authorize_url(host,port)
+    return @facebook.authorize_url(:scope =>  'publish_stream,read_stream,user_about_me,offline_access',
+                                   :redirect_uri => "http://s2sync.brucehsu.org/fb_callback")
+  end
+
+  def get_access_token(code, token=nil)
+    if token == nil
+      @facebook.authorize!(:redirect_uri => 'http://s2sync.brucehsu.org/fb_callback',
+                           :code => code)
+    else
+      @facebook.access_token = token
+    end
+    get_user_id
     return @facebook.access_token
   end
 
@@ -58,5 +61,9 @@ class FBAgent
     end
     link_and_content[:content] = content
     return link_and_content
+  end
+
+  def attributes
+    return @facebook.lighten.attributes
   end
 end

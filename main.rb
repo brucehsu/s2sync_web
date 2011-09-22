@@ -45,6 +45,9 @@ end
 
 get '/fb_callback' do
   code = params[:code]
+
+  fb = @agents[:fb]
+  fb.get_access_token code
 end
 
 
