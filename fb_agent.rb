@@ -30,10 +30,11 @@ class FBAgent
   def post_content(content)
 	content = content.strip
     content = parse_url(content)
-    @prev_id = @facebook.post("#{@user_id}/feed",{'message' => content[:content],
+    return_content = @facebook.post("#{@user_id}/feed",{'message' => content[:content],
                    'link' => content[:url]},
                    nil)
-    @prev_id = @prev_id['id']
+    @prev_id = return_content['id']
+    return_content
   end
 
   def post_comment(content,id=@prev_id)

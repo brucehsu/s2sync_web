@@ -13,7 +13,9 @@ $('#content').keyup(function() {
             url: "/post",
             data: formdata,
             success: function(msg) {
-                alert(msg);
+                $('#post_result').text(msg).fadeIn("slow");
+                $('#content').val('');
+                $('#word_count_indicator').val('0');
             }
         });
     });

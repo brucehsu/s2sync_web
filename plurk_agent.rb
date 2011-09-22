@@ -31,8 +31,9 @@ class PlurkAgent
 
   def post_content(content,qualifier='says')
     begin
-      @prev_id = @plurk.add_plurk(content,qualifier)
-      @prev_id = @prev_id['plurk_id']
+      return_content = @plurk.add_plurk(content,qualifier)
+      @prev_id = return_content['plurk_id']
+      return_content
     rescue RuntimeError  => err
       puts err
     end

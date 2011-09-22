@@ -36,6 +36,14 @@ $border: 2px solid;
     text-align: right;
 }
 
+.post_result_widget {
+    @include widget;
+    margin-top: 0px;
+    margin-bottom: 3px;
+    text-align: center;
+    display: none;
+}
+
 .text_widget {
     @include widget;
     margin-bottom: 5px;

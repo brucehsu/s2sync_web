@@ -60,7 +60,16 @@ get '/plurk_callback' do
 end
 
 post '/post' do
+  stat = ""
   @agents.each { |sns, agent|
-    agent.post_content(params[:content])
+    res = agent.post_content(params[:content])
+    if res['error_text'] then
+      stat += "<br />" unless stat == ""
+      stat += "#{sns.to_s}: #{res['error_text']}"
+    end
   }
+  if stat == "" then
+    return "Successfully posted"
+  end
+  return stat
 end

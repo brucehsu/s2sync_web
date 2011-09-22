@@ -9,6 +9,7 @@
       %textarea{:id=>'content', :name=>'content',  :rows=>'10',:cols=>'30', :class=>'text_widget'} 
       %input{:type=>'submit', :value=>'Post', :class=>'post_widget'}
       %input{:type=>'checkbox', :name=>'post_comment', :value=>'true', :class=>'comment_widget'} Post as comment
+      %div{:id=>'post_result', :class=>'post_result_widget'}
       %div{:id=>'word_count_indicator', :class=>'word_count_widget'} 0
     %br
     %a{:href=>"#{@auth_url[:fb]}"} Link with Facebook
