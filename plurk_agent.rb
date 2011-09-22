@@ -5,16 +5,14 @@ require 'plurk'
 class PlurkAgent
   attr_reader :prev_id
 
-  def initialize
-    @plurk = Plurk.new(:consumer_key => PLURK_APP_KEY, :consumer_secret => PLURK_APP_SECRET)
+  def initialize(opt={})
+    opt[:consumer_key] =  PLURK_APP_KEY
+    opt[:consumer_secret] = PLURK_APP_SECRET
+    @plurk = Plurk.new(opt)
   end
 
   def get_authorize_url(host, port)
     return @plurk.authorize_url! if @plurk.oauth_token == nil
-  end
-
-  def oauth_token= (token) 
-    @plurk.oauth_token = token
   end
 
   def get_access_token(verifier_or_token=nil,secret=nil)
@@ -40,5 +38,9 @@ class PlurkAgent
 
   def post_comment(content,id=@prev_id,qualifier='says')
     @plurk.add_response(id,content,qualifier)
+  end
+
+  def attributes
+    return @plurk.lighten.attributes
   end
 end

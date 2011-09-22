@@ -16,8 +16,9 @@ Plurk = RestCore::Builder.client(:data) do
   use s::ErrorHandler , lambda { |env|
     raise Plurk::Error.call(env)
   }
-  use s::ErrorDetectorHttp
   use s::JsonDecode    , true
+
+  use s::Cache       , {}, 3600
 
   use s::Defaults      , :data     => lambda{{}}
   run s::RestClient
@@ -52,6 +53,14 @@ module Plurk::Client
 
   def oauth_token_secret= secret
     data['oauth_token_secret'] = secret if data.kind_of?(Hash)
+  end
+
+  def oauth_signature
+    data['oauth_signature'] if data.kind_of?(Hash)
+  end
+
+  def oauth_signature= sign
+    data['oauth_signature'] if data.kind_of?(Hash)
   end
 
   def add_plurk content, qualifier='says'
