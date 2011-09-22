@@ -6,21 +6,34 @@ require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'sass'
+require 'oauth'
+require 'net/http'
+require 'uri'
 
-set :agents, {}
+enable :sessions
+
 
 get '/' do
+  session[:plurk] = {}
+  session[:fb] = {}
   @auth_url = {}
 
-  options.agents[request.ip] = {} unless options.agents.has_key? request.ip
-  @agents = options.agents[request.ip]
+  @auth_url[:fb] = "https://www.facebook.com/dialog/oauth?client_id=#{FB_APP_KEY}&redirect_uri=" +
+    CGI::escape("http://s2sync.brucehsu.org/fb_callback") + "&scope=publish_stream,read_stream,user_about_me,offline_access"
 
-  @agents[:fb] = FBAgent.new unless @agents.has_key? :fb
-  @agents[:plurk] = PlurkAgent.new unless @agents.has_key? :plurk
+  @consumer= OAuth::Consumer.new(PLURK_APP_KEY, PLURK_APP_SECRET, {
+        :site => 'http://www.plurk.com',
+        :scheme => :header,
+        :http_method => :post,
+        :request_token_path => '/OAuth/request_token',
+        :access_token_path => '/OAuth/access_token',
+        :authorize_path => '/OAuth/authorize'
+                                 })
+  @request_token = @consumer.get_request_token(:oauth_callback => "http://s2sync.brucehsu.org/plurk_callback")
+  @auth_url[:plurk] = @request_token.authorize_url
 
-  @agents.each { |key, agent|
-    @auth_url[key] = agent.get_authorize_url(request.host,request.port)
-  }
+  session[:plurk][:request_token] = @request_token
+
   haml :index
 end
 
@@ -29,17 +42,28 @@ get '/stylesheet.css' do
 end
 
 get '/fb_callback' do
-  if not params.has_key? "code" then
-    redirect to('/')
-  end
-
   code = params[:code]
+  uri = URI.parse("https://graph.facebook.com")
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  res = http.get("/oauth/access_token?" +
+                  "client_id=#{FB_APP_KEY}&redirect_uri=" +
+                  CGI::escape("http://s2sync.brucehsu.org/fb_callback") +
+                  "&client_secret=#{FB_APP_SECRET}&code=#{code}" ,nil)
+  @access_token = res.body.split('=',2)[1]
+  session[:fb][:access_token] = @access_token
 end
+
 
 get '/plurk_callback' do
-  plurk = options.agents[request.ip][:plurk]
-  access_token = plurk.get_access_token(params[:oauth_verifier])
-  @token = access_token[:token]
-  @secret = access_token[:secret]
+  @request_token = session[:plurk][:request_token]
+  @access_token = @request_token.get_access_token :oauth_verifier => params[:oauth_verifier]
+  session[:plurk][:access_token] = @access_token
+
+  @token = @access_token.token
+  @secret = @access_token.secret
+
   haml :plurk_callback
 end
+
