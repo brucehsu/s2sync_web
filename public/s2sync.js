@@ -5,14 +5,15 @@ $('#content').keyup(function() {
 });
 
 
-    $('#post_content').submit(function() {
+    $('#post_content').submit(function(event) {
+        event.preventDefault();
         var formdata = $('#post_content').serialize();
         $.ajax({
             type: "POST",
             url: "/post",
             data: formdata,
             success: function(msg) {
-                alert("msg");
+                alert(msg);
             }
         });
     });
