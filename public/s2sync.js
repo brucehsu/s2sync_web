@@ -1,4 +1,19 @@
-function word_count() {
-    var count = document.getElementById("content").value.length
-    document.getElementById("word_count_indicator").innerHTML = count
-}
+
+$(document).ready(function() {
+$('#content').keyup(function() {
+    $('#word_count_indicator').html($('#content').val().length);
+});
+
+
+    $('#post_content').submit(function() {
+        var formdata = $('#post_content').serialize();
+        $.ajax({
+            type: "POST",
+            url: "/post",
+            data: formdata,
+            success: function(msg) {
+                alert("msg");
+            }
+        });
+    });
+});
