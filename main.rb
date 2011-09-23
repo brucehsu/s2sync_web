@@ -33,7 +33,7 @@ end
 get '/' do
   @auth_url = {}
   @agents.each { |sns, agent|
-    @auth_url[sns] = agent.get_authorize_url request.host,request.port unless session["#{sns.to_s}_attr".to_sym]
+    @auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.get_access_token
   }
 
   haml :index
@@ -61,7 +61,9 @@ end
 
 post '/post' do
   stat = ""
-  puts params[:content]
+  unless session[:prev_id] then
+    session[:prev_id] = {}
+  end
   content = CGI::unescape(params[:content])
   as_comment = params[:post_comment]
   content = content.split(/^\\p/)
@@ -70,6 +72,7 @@ post '/post' do
       res = agent.post_comment(content[0].strip, session[:prev_id][sns])
     else
       res = agent.post_content(content[0].strip)
+      session[:prev_id][sns] = agent.prev_id
     end
     if res['error_text'] then
       stat += "<br />" unless stat == ""
@@ -86,13 +89,6 @@ post '/post' do
       }
     end
   }
-  
-  unless session[:prev_id] then
-    session[:prev_id] = {}
-  end
-
-  session[:prev_id][:plurk] = @agents[:plurk].prev_id if @agents[:plurk].prev_id
-  session[:prev_id][:fb] = @agents[:fb].prev_id if @agents[:fb].prev_id
 
   if stat == "" then
     return "Successfully posted"

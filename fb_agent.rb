@@ -16,14 +16,14 @@ class FBAgent
                                    :redirect_uri => "http://s2sync.brucehsu.org/fb_callback")
   end
 
-  def get_access_token(code, token=nil)
-    if token == nil
+  def get_access_token(code=nil, token=nil)
+    if code and not token
       @facebook.authorize!(:redirect_uri => 'http://s2sync.brucehsu.org/fb_callback',
                            :code => code)
-    else
+    elsif code and token
       @facebook.access_token = token
     end
-    get_user_id
+    get_user_id if @facebook.access_token
     return @facebook.access_token
   end
 

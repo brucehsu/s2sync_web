@@ -26,7 +26,7 @@ class PlurkAgent
         @plurk.oauth_token_secret = secret
       end
     end
-    return {:token => @plurk.oauth_token, :secret => @plurk.oauth_token_secret}
+    return @plurk.oauth_token_secret
   end
 
   def post_content(content,qualifier='says')
