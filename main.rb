@@ -53,6 +53,7 @@ get '/fb_callback' do
 
   fb = @agents[:fb]
   session[:fb_attr] = fb.get_access_token code
+  redirect to('/')
 end
 
 
@@ -61,6 +62,7 @@ get '/plurk_callback' do
   access_token = plurk.get_access_token(params[:oauth_verifier])
   @token = access_token[:token]
   @secret = access_token[:secret]
+  redirect to('/')
   haml :plurk_callback
 end
 
