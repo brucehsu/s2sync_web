@@ -33,8 +33,13 @@ end
 get '/' do
   @auth_url = {}
   @agents.each { |sns, agent|
-    @auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.get_access_token
+    @auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.has_authorized?
   }
+
+  #Work-around when PlurkAgent generate url without request token
+  unless @agents[:plurk].has_authorized? then
+    redirect to('/') unless @auth_url[:plurk].include? "http://www.plurk.com/OAuth/authorize?oauth_token="
+  end
 
   haml :index
 end

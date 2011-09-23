@@ -14,7 +14,7 @@ class PlurkAgent
   end
 
   def get_authorize_url(host, port)
-    return @plurk.authorize_url! if @plurk.oauth_token == nil
+    return @plurk.authorize_url!
   end
 
   def get_access_token(verifier_or_token=nil,secret=nil)
@@ -26,7 +26,12 @@ class PlurkAgent
         @plurk.oauth_token_secret = secret
       end
     end
-    return @plurk.oauth_token_secret
+    return {:token => @plurk.oauth_token, :secret => @plurk.oauth_token_secret}
+  end
+
+  def has_authorized?
+    res = @plurk.post("/Profile/getOwnProfile",{},nil)
+    return res['error_text'] ? false : true
   end
 
   def post_content(content,qualifier='says')

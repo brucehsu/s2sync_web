@@ -27,6 +27,10 @@ class FBAgent
     return @facebook.access_token
   end
 
+  def has_authorized?
+    return @facebook.access_token ? true : false
+  end
+
   def post_content(content)
 	content = content.strip
     content = parse_url(content)
