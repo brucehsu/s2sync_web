@@ -82,10 +82,14 @@ post '/post' do
     if content.count > 1 then
       content.each_index { |index|
         res = agent.post_comment(content[index].strip) unless index == 0
-        if res['error_text'] then
-          stat += "<br />" unless stat == ""
-          stat += "#{sns.to_s}: #{res['error_text']}"
+        error_msg = ''
+        if res['error_text']then
+          error_msg = "#{sns.to_s}: #{res['error_text']}"
+        elsif res['error'] 
+          error_msg = "#{sns.to_s}: #{res['error']['type']}: #{res['error']['message']}"
         end
+        stat += "<br />" if not stat.empty? and not error_msg.empty?
+        stat += error_msg unless error_msg.empty?
       }
     end
   }
