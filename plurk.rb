@@ -2,7 +2,7 @@ require 'rubygems'
 require 'json/pure'
 require 'rest-core'
 
-Plurk = RestCore::Builder.client(:data) do
+Plurk = RestCore::Builder.client do
   s = self.class
   use s::DefaultSite, 'http://www.plurk.com/APP'
 
@@ -20,7 +20,6 @@ Plurk = RestCore::Builder.client(:data) do
 
   use s::Cache       , {}, 3600
 
-  use s::Defaults      , :data     => lambda{{}}
   run s::RestClient
 end
 
@@ -38,22 +37,6 @@ end
 
 module Plurk::Client
   include RestCore
-  
-  def oauth_token
-    data['oauth_token'] if data.kind_of?(Hash)
-  end
-
-  def oauth_token= token
-    data['oauth_token'] = token if data.kind_of?(Hash)
-  end
-
-  def oauth_token_secret
-    data['oauth_token_secret'] if data.kind_of?(Hash)
-  end
-
-  def oauth_token_secret= secret
-    data['oauth_token_secret'] = secret if data.kind_of?(Hash)
-  end
 
   def oauth_signature
     data['oauth_signature'] if data.kind_of?(Hash)
@@ -72,9 +55,9 @@ module Plurk::Client
            'content' => content, 'qualifier' => qualifier}, nil)
   end
 
- private
-  def set_token query
-    self.data = query
+  private
+  def default_data
+    {}
   end
 end
 
