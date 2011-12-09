@@ -20,7 +20,7 @@ class PlurkAgent
   def get_access_token(verifier_or_token=nil,secret=nil)
     if not verifier_or_token == nil then
       if secret == nil then
-        @plurk.authorize!(verifier_or_token)
+        @plurk.authorize!(:oauth_verifier=>verifier_or_token)
       else
         @plurk.oauth_token = verifier_or_token
         @plurk.oauth_token_secret = secret
