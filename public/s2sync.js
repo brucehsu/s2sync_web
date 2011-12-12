@@ -15,7 +15,7 @@ $('#content').keyup(function() {
             success: function(msg) {
                 $('#post_result').text(msg).fadeIn("slow");
                 $('#content').val('');
-                $('#word_count_indicator').val('0');
+                $('#word_count_indicator').html('0');
             }
         });
     });
