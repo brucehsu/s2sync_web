@@ -24,6 +24,6 @@ $(document).ready(function() {
 function getTitle() {
     $.get('/get_page_title/' + encodeURIComponent($('#link_url').val()),
         function(data) {
-            alert(data);
+            $('#content').val($('#link_url').val() + ' (' + data +') ' + $('#content').val());
         }); 
 }

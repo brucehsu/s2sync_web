@@ -112,6 +112,7 @@ end
 
 get '/get_page_title/:url' do |url|
     url = CGI::unescape url
+    url = 'http://' + url unless url.match(/https?:\/\//i)
     head = ''
     open(url) do |f|
         f.each_line do |l|
