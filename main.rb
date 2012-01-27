@@ -7,6 +7,8 @@ require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'sass'
+require 'nokogiri'
+require 'open-uri'
 
 enable :sessions
 
@@ -106,4 +108,17 @@ post '/post' do
 	return "Successfully posted"
   end
   return stat
+end
+
+get '/get_page_title/:url' do |url|
+    url = CGI::unescape url
+    head = ''
+    open(url) do |f|
+        f.each_line do |l|
+            head += l
+            break if l.match(/<\/head>/i)
+        end
+    end
+    doc = Nokogiri::XML(head)
+    doc.css("title").text
 end
