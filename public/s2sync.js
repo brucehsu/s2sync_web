@@ -1,8 +1,8 @@
 
 $(document).ready(function() {
-$('#content').keyup(function() {
-    $('#word_count_indicator').html($('#content').val().length);
-});
+    $('#content').keyup(function() {
+        $('#word_count_indicator').html($('#content').val().length);
+    });
 
 
     $('#post_content').submit(function(event) {
