@@ -22,7 +22,9 @@ $(document).ready(function() {
 });
 
 function getTitle() {
-    $.get('/get_page_title/' + encodeURIComponent($('#link_url').val()),
+    var geturl = '/get_page_title/' + encodeURIComponent($('#link_url').val());
+    geturl = geturl.replace(/%/ig,'%25');
+    $.get(geturl,
         function(data) {
             $('#content').val($('#link_url').val() + ' (' + data +') ' + $('#content').val());
         }); 
