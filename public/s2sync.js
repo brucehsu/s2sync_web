@@ -27,5 +27,6 @@ function getTitle() {
     $.get(geturl,
         function(data) {
             $('#content').val($('#link_url').val() + ' (' + data +') ' + $('#content').val());
+            $('#link_url').val('');
         }); 
 }
