@@ -8,6 +8,7 @@ $(document).ready(function() {
     $('#post_content').submit(function(event) {
         event.preventDefault();
         var formdata = $('#post_content').serialize();
+        formdata = formdata.replace(/%2B/,'%252B'); //Double-escape plus sign(+) to avoid unescape as space
         $.ajax({
             type: "POST",
             url: "/post",
