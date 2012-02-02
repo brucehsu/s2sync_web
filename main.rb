@@ -72,9 +72,9 @@ end
 post '/post' do
   stat = ""
   unless session[:prev_id] then
-	session[:prev_id] = {}
+	 session[:prev_id] = {}
   end
-  content = CGI::unescape(params[:content])
+  content = params[:content]
   as_comment = params[:post_comment]
   content = content.split(/^\\p/)
   @agents.each { |sns, agent|
@@ -111,7 +111,7 @@ post '/post' do
 end
 
 get '/get_page_title/:url' do |url|
-    url = CGI::unescape url
+    url = URI::decode_www_form_component url
     url = 'http://' + url unless url.match(/https?:\/\//i)
     head = ''
     open(url) do |f|
