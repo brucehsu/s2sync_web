@@ -105,9 +105,9 @@ post '/post' do
   }
 
   if stat == "" then
-	return "Successfully posted"
+	 return '<div class="success_box">' + "Successfully posted" + '</div>'
   end
-  return stat
+  return '<div class="failed_box">' + stat + '</div>'
 end
 
 get '/get_page_title/:url' do |url|

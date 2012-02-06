@@ -13,7 +13,7 @@ $(document).ready(function() {
             url: "/post",
             data: formdata,
             success: function(msg) {
-                $('#post_result').text(msg).fadeIn("slow");
+                $('#post_result').html(msg).fadeIn("slow");
                 $('#content').val('');
                 $('#word_count_indicator').html('0');
             }
