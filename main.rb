@@ -1,9 +1,11 @@
+require "rubygems"
+require "bundler/setup"
+
 $LOAD_PATH << '.'
 require 'oauth_const'
 require 'fb_agent'
 require 'plurk_agent'
 
-require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'sass'
