@@ -18,6 +18,6 @@ body
       div id='post_result' class='post_result_widget'
     br
     - @auth_url.each do |sns, link|
-      a href="#{link}" Link with #{sns.capitalize}
+      a href="#{link}" Link with #{sns.to_s.capitalize}
       br
 
