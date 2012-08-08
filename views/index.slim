@@ -1,0 +1,23 @@
+head
+  title Simple Status Sync (s2sync)
+  link href='stylesheet.css'rel='stylesheet'type='text/css'
+  script type='text/javascript' src='/jquery.js'
+  script type='text/javascript' src='/s2sync.js'
+  meta http-equiv='Content-type' content='text/html; charset=utf-8'
+body
+  div class='widget_box'
+    form#post_content action='/post'
+      textarea id='content' name='content' rows='10'cols='30' class='text_widget'
+      div id='link_box' class='link_box'
+        input type='text' class='link_url' id='link_url'
+        input type='button' value='Add link' class='link_btn' onclick='getTitle();'
+      input type='submit' value='Post' class='post_widget'
+      br
+      input type='checkbox' name='post_comment' value='true' class='comment_widget' Post as comment
+      div id='word_count_indicator' class='word_count_widget' 0
+      div id='post_result' class='post_result_widget'
+    br
+    a href="#{@auth_url[:fb]}" Link with Facebook
+    br
+    a href="#{@auth_url[:plurk]}" Link with Plurk
+

@@ -7,7 +7,7 @@ require 'fb_agent'
 require 'plurk_agent'
 
 require 'sinatra'
-require 'haml'
+require 'slim'
 require 'sass'
 require 'nokogiri'
 require 'open-uri'
@@ -46,7 +46,7 @@ get '/' do
 	redirect to('/') unless @auth_url[:plurk].include? "http://www.plurk.com/OAuth/authorize?oauth_token="
   end
 
-  haml :index
+  slim :index
 end
 
 get '/stylesheet.css' do
