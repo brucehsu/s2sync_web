@@ -1,4 +1,4 @@
-getTitle = ->
+@getTitle = ->
   geturl = "/get_page_title/" + encodeURIComponent($("#link_url").val())
   geturl = geturl.replace(/%/g, "%25")
   $.get geturl, (data) ->
@@ -20,5 +20,3 @@ $(document).ready ->
         $("#post_result").html(msg).fadeIn "slow"
         $("#content").val ""
         $("#word_count_indicator").html "0"
-
-
