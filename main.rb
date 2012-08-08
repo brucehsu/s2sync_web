@@ -9,6 +9,7 @@ require 'plurk_agent'
 require 'sinatra'
 require 'slim'
 require 'sass'
+require 'coffee_script'
 require 'nokogiri'
 require 'open-uri'
 
@@ -51,6 +52,10 @@ end
 
 get '/stylesheet.css' do
   scss :stylesheet
+end
+
+get '/s2sync.js' do
+  coffee :s2sync
 end
 
 get '/fb_callback' do
