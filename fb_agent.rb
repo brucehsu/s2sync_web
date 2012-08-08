@@ -28,7 +28,7 @@ class FBAgent
   end
 
   def has_authorized?
-    return @facebook.access_token ? true : false
+    return @facebook.access_token && @facebook.get('me')['error'].nil?
   end
 
   def post_content(content)
