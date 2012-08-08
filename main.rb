@@ -24,22 +24,22 @@ before do
 	@agents[:plurk] = PlurkAgent.new
   end
 
-  if session[:fb_attr] then
-	@agents[:fb] = FBAgent.new(:access_token => session[:fb_attr])
+  if session[:facebook_attr] then
+	@agents[:facebook] = FBAgent.new(:access_token => session[:facebook_attr])
   else
-	@agents[:fb] = FBAgent.new
+	@agents[:facebook] = FBAgent.new
   end
 end
 
 after do
   session[:plurk_attr] = @agents[:plurk].attributes
-  #  session[:fb_attr] = @agents[:fb].attributes
+  #  session[:facebook_attr] = @agents[:facebook].attributes
 end
 
 get '/' do
   @auth_url = {}
   @agents.each { |sns, agent|
-	@auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.has_authorized?
+	 @auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.has_authorized?
   }
 
   #Work-around when PlurkAgent generate url without request token
@@ -61,8 +61,8 @@ end
 get '/fb_callback' do
   code = params[:code]
 
-  fb = @agents[:fb]
-  session[:fb_attr] = fb.get_access_token code
+  fb = @agents[:facebook]
+  session[:facebook_attr] = fb.get_access_token code
   redirect to('/')
 end
 
