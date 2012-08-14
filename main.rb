@@ -5,6 +5,7 @@ $LOAD_PATH << '.'
 require 'oauth_const'
 require 'fb_agent'
 require 'plurk_agent'
+require 'twitter_agent'
 
 require 'sinatra'
 require 'slim'
@@ -29,10 +30,17 @@ before do
   else
 	@agents[:facebook] = FBAgent.new
   end
+
+  if session[:twitter_attr] then
+    @agents[:twitter] = TwitterAgent.new(:data=>session[:twitter_attr])
+  else
+    @agents[:twitter] = TwitterAgent.new
+  end
 end
 
 after do
   session[:plurk_attr] = @agents[:plurk].attributes
+  session[:twitter_attr] = @agents[:twitter].data
   #  session[:facebook_attr] = @agents[:facebook].attributes
 end
 
@@ -74,6 +82,14 @@ get '/plurk_callback' do
   @secret = access_token[:secret]
   redirect to('/')
   haml :plurk_callback
+end
+
+get '/tw_callback' do
+  twitter = @agents[:twitter]
+  access_token = twitter.get_access_token(params[:oauth_verifier])
+  @token = access_token[:token]
+  @secret = access_token[:secret]
+  redirect to('/')
 end
 
 post '/post' do
