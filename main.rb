@@ -18,6 +18,7 @@ enable :sessions
 
 before do
   @agents = {}
+  @auth_stat = {}
   @agents[:plurk] = PlurkAgent.new(session[:plurk_attr]||{})
   @agents[:facebook] = FBAgent.new(:access_token => session[:facebook_attr])
   @agents[:twitter] = TwitterAgent.new(:data=>session[:twitter_attr])
@@ -30,9 +31,12 @@ after do
 end
 
 def check_agents_authorization
-  @agents[:plurk] = PlurkAgent.new unless @agents[:plurk].has_authorized?
-  @agents[:facebook] = FBAgent.new unless @agents[:facebook].has_authorized?
-  @agents[:twitter] = TwitterAgent.new unless @agents[:twitter].has_authorized?
+  @agents.each do |sns, agent|
+    @auth_stat[sns] = agent.has_authorized?
+  end
+  @agents[:plurk] = PlurkAgent.new unless @auth_stat[:plurk]
+  @agents[:facebook] = FBAgent.new unless @auth_stat[:facebook]
+  @agents[:twitter] = TwitterAgent.new unless @auth_stat[:twitter]
 end
 
 get '/' do
@@ -40,7 +44,7 @@ get '/' do
 
   @auth_url = {}
   @agents.each { |sns, agent|
-	 @auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.has_authorized?
+	 @auth_url[sns] = agent.get_authorize_url request.host,request.port unless @auth_stat[sns]
   }
 
   #Work-around when PlurkAgent generate url without request token, the cause is token being used twice returns HTTP 401
