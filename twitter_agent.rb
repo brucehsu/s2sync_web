@@ -15,15 +15,8 @@ class TwitterAgent
     return @twitter.authorize_url!
   end
 
-  def get_access_token(verifier_or_token=nil,secret=nil)
-    if not verifier_or_token == nil then
-      if secret == nil then
-        @twitter.authorize!(:oauth_verifier=>verifier_or_token)
-      else
-        @twitter.oauth_token = verifier_or_token
-        @twitter.oauth_token_secret = secret
-      end
-    end
+  def get_access_token(verifier_or_token=nil)
+    @twitter.authorize!(:oauth_verifier=>verifier_or_token)
     return {:token => @twitter.oauth_token, :secret => @twitter.oauth_token_secret}
   end
 

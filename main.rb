@@ -18,15 +18,9 @@ enable :sessions
 
 before do
   @agents = {}
-
   @agents[:plurk] = PlurkAgent.new(session[:plurk_attr]||{})
-  @agents[:plurk] = PlurkAgent.new unless @agents[:plurk].has_authorized?
-
   @agents[:facebook] = FBAgent.new(:access_token => session[:facebook_attr])
-  @agents[:facebook] = FBAgent.new unless @agents[:facebook].has_authorized?
-
   @agents[:twitter] = TwitterAgent.new(:data=>session[:twitter_attr])
-  @agents[:twitter] = TwitterAgent.new unless @agents[:twitter].has_authorized?
 end
 
 after do
@@ -35,7 +29,15 @@ after do
   #  session[:facebook_attr] = @agents[:facebook].attributes
 end
 
+def check_agents_authorization
+  @agents[:plurk] = PlurkAgent.new unless @agents[:plurk].has_authorized?
+  @agents[:facebook] = FBAgent.new unless @agents[:facebook].has_authorized?
+  @agents[:twitter] = TwitterAgent.new unless @agents[:twitter].has_authorized?
+end
+
 get '/' do
+  check_agents_authorization
+
   @auth_url = {}
   @agents.each { |sns, agent|
 	 @auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.has_authorized?
@@ -81,8 +83,6 @@ end
 get '/tw_callback' do
   twitter = @agents[:twitter]
   access_token = twitter.get_access_token(params[:oauth_verifier])
-  @token = access_token[:token]
-  @secret = access_token[:secret]
   redirect to('/')
 end
 
