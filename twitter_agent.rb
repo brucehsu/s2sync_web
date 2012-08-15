@@ -2,6 +2,8 @@ require 'rubygems'
 require 'json/pure'
 require 'rest-more'
 
+RC::Twitter::Error.send :remove_method, :code
+
 class TwitterAgent
   def initialize(opt={})
     opt[:consumer_key] = TWITTER_APP_KEY
