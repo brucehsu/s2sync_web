@@ -5,6 +5,8 @@ require 'rest-more'
 RC::Twitter::Error.send :remove_method, :code
 
 class TwitterAgent
+  attr_reader :prev_id
+
   def initialize(opt={})
     opt[:consumer_key] = TWITTER_APP_KEY
     opt[:consumer_secret] = TWITTER_APP_SECRET
