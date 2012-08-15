@@ -19,23 +19,14 @@ enable :sessions
 before do
   @agents = {}
 
-  if session[:plurk_attr] then
-	@agents[:plurk] = PlurkAgent.new(session[:plurk_attr])
-  else
-	@agents[:plurk] = PlurkAgent.new
-  end
+  @agents[:plurk] = PlurkAgent.new(session[:plurk_attr]||{})
+  @agents[:plurk] = PlurkAgent.new unless @agents[:plurk].has_authorized?
 
-  if session[:facebook_attr] then
-	@agents[:facebook] = FBAgent.new(:access_token => session[:facebook_attr])
-  else
-	@agents[:facebook] = FBAgent.new
-  end
+  @agents[:facebook] = FBAgent.new(:access_token => session[:facebook_attr])
+  @agents[:facebook] = FBAgent.new unless @agents[:facebook].has_authorized?
 
-  if session[:twitter_attr] then
-    @agents[:twitter] = TwitterAgent.new(:data=>session[:twitter_attr])
-  else
-    @agents[:twitter] = TwitterAgent.new
-  end
+  @agents[:twitter] = TwitterAgent.new(:data=>session[:twitter_attr])
+  @agents[:twitter] = TwitterAgent.new unless @agents[:twitter].has_authorized?
 end
 
 after do
@@ -50,9 +41,12 @@ get '/' do
 	 @auth_url[sns] = agent.get_authorize_url request.host,request.port unless agent.has_authorized?
   }
 
-  #Work-around when PlurkAgent generate url without request token
+  #Work-around when PlurkAgent generate url without request token, the cause is token being used twice returns HTTP 401
   unless @agents[:plurk].has_authorized? then
-	redirect to('/') unless @auth_url[:plurk].include? "http://www.plurk.com/OAuth/authorize?oauth_token="
+	unless @auth_url[:plurk].include? "http://www.plurk.com/OAuth/authorize?oauth_token="
+      @agents[:plurk] = PlurkAgent.new
+      @auth_url[:plurk] = @agents[:plurk].get_authorize_url
+    end
   end
 
   slim :index
