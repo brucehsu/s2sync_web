@@ -46,10 +46,10 @@ class TwitterAgent
     return_content
   end
 
-  def post_comment(content)
+  def post_comment(content, id=@prev_id)
     content.strip!
     content = "@#{get_user_name} " + content
-    return_content = @twitter.tweet(content,nil,{:in_reply_to_status_id=>@prev_id},{},{})
+    return_content = @twitter.tweet(content,nil,{:in_reply_to_status_id=>id},{},{})
     @prev_id = return_content['id_str']
     return_content
   end
