@@ -5,6 +5,12 @@ $link_width: $width - 86;
 $height: 400px;
 $border: 1px solid;
 
+$media: only screen;
+$iphone-min-width: 320px;
+$iphone-max-width: 480px;
+$ipad-min-width: 768px;
+$ipad-max-width: 1024px;
+
 .rounded {
     border-radius: $radius;
 }
@@ -14,11 +20,21 @@ $border: 1px solid;
 }
 
 .widget_box {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 98%;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+    }
+
     float: center;
     position: relative;
     margin: auto;
-    width: $width+50;
-    height:$height+50;
+
+    width: $width + 50;
+    height: $height + 50;
+
     background-color: lighten($color, 100%);
 }
 
@@ -26,12 +42,42 @@ $border: 1px solid;
     margin: 20px;
 }
 
-.comment_widget {
+.comment_widget_text {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        font-size: 36px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        font-size: 24px;
+    }
+
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
+.comment_widget_checkbox {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 42px;
+        height: 42px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 30px;
+        height: 30px;
+    }
+}
+
 .word_count_widget {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 95%;
+        font-size: 36px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+        font-size: 24px;
+    }
+
     margin-top: 0px;
     margin-bottom: 0px;
     text-align: right;
@@ -39,6 +85,14 @@ $border: 1px solid;
 }
 
 .post_result_widget {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 95%;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+    }
+
     margin-top: 0px;
     margin-bottom: 3px;
     text-align: center;
@@ -47,6 +101,16 @@ $border: 1px solid;
 }
 
 .text_widget {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 95%;
+        height: 680px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+        height: 768px;
+    }
+
     margin-bottom: 5px;
     width: $width;
     height: $height;
@@ -55,6 +119,16 @@ $border: 1px solid;
 }
 
 .post_widget {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 95%;
+        font-size: 28px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+        font-size: 18px;
+    }
+
     margin-top: 0px;
     margin-bottom: 0px;
     width: $width;
@@ -62,12 +136,30 @@ $border: 1px solid;
 }
 
 .link_box {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 95%;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+    }
+
     margin-top: 0px;
     margin-bottom: 0px;
     width: $width;
 }
 
 .success_box {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 95%;
+        font-size: 28px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+        font-size: 18px;
+    }
+
     text-align: center;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -79,6 +171,16 @@ $border: 1px solid;
 }
 
 .failed_box {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 95%;
+        font-size: 28px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+        font-size: 18px;
+    }
+
     margin-top: 0px;
     margin-bottom: 3px;
     text-align: center;
@@ -93,6 +195,16 @@ $border: 1px solid;
 }
 
 .link_url {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 80%;
+        font-size: 28px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 85%;
+        font-size: 18px;
+    }
+
     margin: 3px;
     margin-bottom: 5px;
     margin-left: 0px;
@@ -102,10 +214,30 @@ $border: 1px solid;
 }
 
 .link_btn {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        width: 20%;
+        font-size: 28px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        width: 15%;
+        font-size: 18px;
+    }
+
     margin: 3px;
     margin-bottom: 5px;
     margin-left: 1px;
     margin-right: 0px;
     align: center;
     width: 80px;
+}
+
+.sns_link {
+    @media #{$media} and (min-device-width: $iphone-min-width) and (max-device-width: $iphone-max-width) {
+        font-size: 36px;
+    }
+
+    @media #{$media} and (min-device-width: $ipad-min-width) and (max-device-width: $ipad-max-width) {
+        font-size:24px;
+    }
 }
