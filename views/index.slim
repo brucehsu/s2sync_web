@@ -1,24 +1,61 @@
 head
   title Simple Status Sync (s2sync)
-  link href='stylesheet.css'rel='stylesheet'type='text/css'
-  script type='text/javascript' src='/jquery.js'
+  link href='/css/gumby.css' rel='stylesheet'type='text/css'
+  link href='stylesheet.css' rel='stylesheet'type='text/css'
+  script type='text/javascript' src='/js/libs/jquery-1.7.2.min.js'
   script type='text/javascript' src='/s2sync.js'
+  script type='text/javascript' src='/js/libs/modernizr-2.0.6.min.js'
+  script type='text/javascript' src='/js/libs/gumby.min.js'
+  script type="text/javascript" src="/js/libs/ui/gumby.checkbox.js"
+  script type='text/javascript' src='/js/main.js'
+  script type='text/javascript' src='/js/plugins.js'
   meta http-equiv='Content-type' content='text/html; charset=utf-8'
 body
-  div class='widget_box'
-    form#post_content action='/post'
-      textarea id='content' name='content' rows='10'cols='30' class='text_widget'
-      div id='link_box' class='link_box'
-        input type='text' class='link_url' id='link_url'
-        input type='button' value='Add link' class='link_btn' onclick='getTitle();'
-      input type='submit' value='Post' class='post_widget'
-      br
-      input type='checkbox' name='post_comment' value='true'class='comment_widget_checkbox'
-      label for='post_comment' class='comment_widget_text' Post as comment
-      div id='word_count_indicator' class='word_count_widget' 0
-      div id='post_result' class='post_result_widget'
+  div class='container'
     br
-    - @auth_url.each do |sns, link|
-      a class="sns_link" href="#{link}" Link with #{sns.to_s.capitalize}
-      br
+    div class="row"
+      div class="centered ten columns"
+        form#post_content action='/post'
+
+          div class="row"
+            div class="push_one five columns"
+              - if @auth_url[:facebook]
+                a href="#{@auth_url[:facebook]}"
+                  i class="icon-facebook icon-size-large"
+              - else
+                i class="icon-facebook icon-size-large"
+
+              - if @auth_url[:twitter]
+                a href="#{@auth_url[:twitter]}"
+                  i class="icon-twitter icon-size-large"
+              - else
+                i class="icon-twitter icon-size-large"
+              
+              - if @auth_url[:plurk]
+                a href="#{@auth_url[:plurk]}"
+                  i class="icon-paypal icon-size-large"
+              - else
+                i class="icon-paypal icon-size-large"
+            div class="push_four one columns indicator"
+              li class="primary badge " id="word_count_indicator" 0
+
+          div class="row"
+            div class="centered ten columns"
+              textarea id='content' name='content' rows='10'cols='10' class='input textarea text_widget'
+
+          div class="row"
+            div class="centered ten columns"
+              div id='post_result' class='post_result_widget'
+
+          div class="row"
+            ul class="push_six three columns" 
+              li class="field"
+                label class="checkbox post_comment" for="post_comment"
+                  input type='checkbox' name='post_comment' value='true'
+                  span
+                  | Post as comment
+            div class="one columns pretty post_btn"
+              div class="medium primary btn"
+                input type='submit' value='Post'
+        br
 
