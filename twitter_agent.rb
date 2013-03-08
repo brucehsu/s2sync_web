@@ -32,7 +32,7 @@ class TwitterAgent
 
   def has_authorized?
     begin
-      res = @twitter.get('1/statuses/home_timeline.json',{}, {:count=>5})
+      res = @twitter.get('1.1/account/verify_credentials.json',{}, {:skip_status=>true})
       return true
     rescue
       return false
