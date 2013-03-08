@@ -30,8 +30,12 @@ class PlurkAgent
   end
 
   def has_authorized?
-    res = @plurk.post("/Profile/getOwnProfile",{},nil)
-    return res['error_text'] ? false : true
+    begin
+      res = @plurk.post("/checkToken")
+      return true
+    rescue
+      return false
+    end
   end
 
   def post_content(content,qualifier='says')
