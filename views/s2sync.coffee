@@ -24,9 +24,9 @@ $(document).ready ->
   $("#new_comment_btn").on Gumby.click, ->
     $("#new_post_btn").attr("class", "medium btn pill-left default")
     $("#new_comment_btn").attr("class", "medium btn pill-right primary")
-    $("#post_comment").attr("value","true")
+    $("#post_comment").val("true")
 
   $("#new_post_btn").on Gumby.click, ->
     $("#new_post_btn").attr("class", "medium btn pill-left primary")
     $("#new_comment_btn").attr("class", "medium btn pill-right default")
-    $("#post_comment").attr("value","false")
+    $("#post_comment").val("false")
