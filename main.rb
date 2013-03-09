@@ -99,36 +99,36 @@ post '/post' do
   as_comment = params[:post_comment]
   content = content.split(/^\\p/)
   @agents.each { |sns, agent|
-	if as_comment == 'true' then
-	  res = agent.post_comment(content[0].strip, session[:prev_id][sns])
-	else
-	  res = agent.post_content(content[0].strip)
-	  session[:prev_id][sns] = agent.prev_id
-	end
-	if res['error_text'] then
-	  stat += "<br />" unless stat == ""
-	  stat += "#{sns.to_s}: #{res['error_text']}"
-	end
+  	if as_comment == 'true' then
+  	  res = agent.post_comment(content[0].strip, session[:prev_id][sns])
+  	else
+  	  res = agent.post_content(content[0].strip)
+  	  session[:prev_id][sns] = agent.prev_id
+  	end
+  	if res['error_text'] then
+  	  stat += "<br />" unless stat == ""
+  	  stat += "#{sns.to_s}: #{res['error_text']}"
+  	end
 
-	if content.count > 1 then
-	  content.each_index { |index|
-		res = agent.post_comment(content[index].strip) unless index == 0
-		error_msg = ''
-		if res['error_text']then
-		  error_msg = "#{sns.to_s}: #{res['error_text']}"
-		elsif res['error'] 
-		  error_msg = "#{sns.to_s}: #{res['error']['type']}: #{res['error']['message']}"
-		end
-		stat += "<br />" if not stat.empty? and not error_msg.empty?
-		stat += error_msg unless error_msg.empty?
-	  }
-	end
+  	if content.count > 1 then
+  	  content.each_index { |index|
+  		res = agent.post_comment(content[index].strip) unless index == 0
+  		error_msg = ''
+  		if res['error_text']then
+  		  error_msg = "#{sns.to_s}: #{res['error_text']}"
+  		elsif res['error'] 
+  		  error_msg = "#{sns.to_s}: #{res['error']['type']}: #{res['error']['message']}"
+  		end
+  		stat += "<br />" if not stat.empty? and not error_msg.empty?
+  		stat += error_msg unless error_msg.empty?
+  	  }
+  	end
   }
 
   if stat == "" then
-	 return '<div class="success_box">' + "Successfully posted" + '</div>'
+	 return '<li class="success alert">' + "Successfully posted" + '</div>'
   end
-  return '<div class="failed_box">' + stat + '</div>'
+  return '<li class="danger alert">' + stat + '</div>'
 end
 
 get '/get_page_title/:url' do |url|
