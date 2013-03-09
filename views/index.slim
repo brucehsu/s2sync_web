@@ -49,14 +49,15 @@ body
               div id='post_result' class='post_result_widget'
 
           div class="row"
-            ul class="push_six three columns" 
-              li class="field"
-                label class="checkbox post_comment" for="post_comment"
-                  input type='checkbox' name='post_comment' value='true'
-                  span
-                  | Post as comment
-            div class="one columns pretty post_btn"
+            ul class="push_one three columns" 
+              div class="medium btn pill-left primary" id="new_post_btn"
+                a href="#"
+                  i class="icon-pencil"
+              div class="medium btn pill-right default" id="new_comment_btn"
+                a href="#"
+                  i class="icon-reply"
+            input type="hidden" name="post_comment" value="false"
+            div class="push_five one columns pretty post_btn"
               div class="medium primary btn"
                 input type='submit' value='Post'
-        br
 
