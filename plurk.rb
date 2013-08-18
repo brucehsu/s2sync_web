@@ -14,13 +14,11 @@ Plurk = RestCore::Builder.client do
   use s::CommonLogger  , method(:puts)
 
   use s::ErrorHandler , lambda { |env|
-    raise Plurk::Error.call(env)
+    Plurk::Error.new(env["RESPONSE_BODY"])
   }
-  use s::JsonDecode    , true
+  use s::JsonResponse, true
 
   use s::Cache       , {}, 3600
-
-  run s::RestClient
 end
 
 class Plurk::Error < RuntimeError
@@ -28,36 +26,18 @@ class Plurk::Error < RuntimeError
 
   def initialize (error)
     @error = error
-  end
-
-  def self.call(env)
-    @error = env["RESPONSE_BODY"]["error_text"]
+    super(error["error_text"])
   end
 end
 
 module Plurk::Client
-  include RestCore
-
-  def oauth_signature
-    data['oauth_signature'] if data.kind_of?(Hash)
-  end
-
-  def oauth_signature= sign
-    data['oauth_signature'] if data.kind_of?(Hash)
-  end
-
   def add_plurk content, qualifier='says'
-    post('/Timeline/plurkAdd', {"content"=>content, "qualifier" => qualifier}, nil)
+    post('/Timeline/plurkAdd', {"content"=>content, "qualifier" => qualifier})
   end
 
   def add_response plurk_id, content, qualifier='says'
     post('/Responses/responseAdd', {'plurk_id' => plurk_id,
-           'content' => content, 'qualifier' => qualifier}, nil)
-  end
-
-  private
-  def default_data
-    {}
+           'content' => content, 'qualifier' => qualifier})
   end
 end
 
