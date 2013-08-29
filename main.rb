@@ -14,7 +14,10 @@ require 'coffee_script'
 require 'nokogiri'
 require 'open-uri'
 
-enable :sessions
+configure do
+   enable :sessions
+   set :protection, :except => [:remote_token, :http_origin]
+end
 
 before do
   @agents = {}
