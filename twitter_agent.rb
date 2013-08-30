@@ -32,7 +32,7 @@ class TwitterAgent
 
   def has_authorized?
     begin
-      res = @twitter.get('1.1/account/verify_credentials.json',{}, {:skip_status=>true})
+      res = @twitter.get('1.1/account/verify_credentials.json',{}, {:skip_status=>true}).tap {}
       return true
     rescue
       return false
