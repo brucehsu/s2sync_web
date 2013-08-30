@@ -102,6 +102,7 @@ post '/post' do
   as_comment = params[:post_comment]
   content = content.split(/^\\p/)
   @agents.each { |sns, agent|
+    next unless agent.has_authorized?
   	if as_comment == 'true' then
   	  res = agent.post_comment(content[0].strip, session[:prev_id][sns])
   	else
